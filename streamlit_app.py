@@ -130,7 +130,19 @@ st.markdown(custom_css, unsafe_allow_html=True)
 
 # OpenAI 클라이언트 초기화
 api_key = st.secrets.get("OPENAI_API_KEY")
-client = OpenAI(api_key=api_key)
+
+# API 키 검증
+if not api_key or api_key.strip() == "":
+    st.error("❌ OpenAI API 키가 설정되지 않았습니다.")
+    st.info("💡 `.streamlit/secrets.toml` 파일에 다음과 같이 API 키를 설정해주세요:\n\n```\nOPENAI_API_KEY=\"your-api-key-here\"\n```")
+    st.stop()
+
+try:
+    client = OpenAI(api_key=api_key)
+except Exception as e:
+    st.error(f"❌ OpenAI 클라이언트 초기화 오류: {str(e)}")
+    st.info("💡 API 키가 유효한지 확인해주세요.")
+    st.stop()
 
 # 시인 프로필 상태 관리
 poet_statuses = [

@@ -130,16 +130,10 @@ st.markdown(custom_css, unsafe_allow_html=True)
 
 # OpenAI 클라이언트 초기화
 try:
-    api_key = st.secrets.get("OPENAI_API_KEY")
+    api_key = st.secrets.get("OPENAI_API_KEY", "").strip()
     
     # API 키 검증
-    if not api_key:
-        st.error("❌ OpenAI API 키가 설정되지 않았습니다.")
-        st.info("💡 `.streamlit/secrets.toml` 파일에 다음과 같이 API 키를 설정해주세요:\n\n```\nOPENAI_API_KEY = \"your-api-key-here\"\n```")
-        st.stop()
-    
-    api_key = api_key.strip()
-    if not api_key or api_key == "your-api-key-here":
+    if not api_key or not api_key.startswith("sk-"):
         st.error("❌ OpenAI API 키가 설정되지 않았습니다.")
         st.info("💡 `.streamlit/secrets.toml` 파일에 올바른 API 키를 설정해주세요.")
         st.stop()

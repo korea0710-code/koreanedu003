@@ -145,6 +145,17 @@ except Exception as e:
     st.info("💡 API 키가 유효한지 확인해주세요.")
     st.stop()
 
+# --- 진단: 시크릿 상태 간단 표시 (마스킹) ---
+try:
+    raw_key = st.secrets.get("OPENAI_API_KEY", "")
+    if raw_key:
+        masked = raw_key[:4] + "*"*(max(0, len(raw_key)-8)) + raw_key[-4:]
+        st.caption(f"Loaded OPENAI_API_KEY: {masked}")
+    else:
+        st.caption("Loaded OPENAI_API_KEY: (없음)")
+except Exception:
+    st.caption("Loaded OPENAI_API_KEY: (error reading secrets)")
+
 # 시인 프로필 상태 관리
 poet_statuses = [
     "오늘은 달이 유난히 아름답네 🌙",

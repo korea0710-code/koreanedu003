@@ -241,14 +241,14 @@ if user_input:
     with st.spinner("시인이 생각 중... ✍️"):
         try:
             # GPT-4o-mini 모델을 사용하여 응답 생성
-            response = client.messages.create(
+            response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=st.session_state.messages,
                 max_tokens=512,
                 temperature=0.8
             )
             
-            assistant_message = response.content[0].text
+            assistant_message = response.choices[0].message.content
             
             # 응답 메시지를 세션 상태에 추가
             st.session_state.messages.append({
